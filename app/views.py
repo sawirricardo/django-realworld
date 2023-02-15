@@ -19,6 +19,18 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
 
 
+class ArticleFavoriteView(generics.GenericAPIView):
+    def post(self, request, slug, *args, **kwargs):
+        article = get_object_or_404(Article, slug=slug)
+        article.favoriters.add(request.user)
+        return Response(status=204)
+
+    def delete(self, request, slug, *args, **kwargs):
+        article = get_object_or_404(Article, slug=slug)
+        article.favoriters.remove(request.user)
+        return Response(status=204)
+
+
 class CommentListView(generics.ListCreateAPIView):
     max_page_size = 15
     serializer_class = CommentSerializer
@@ -39,6 +51,18 @@ class TagListView(generics.ListAPIView):
 class ProfileDetailView(generics.RetrieveAPIView):
     serializer_class = ArticleSerializer
     lookup_field = "username"
+
+
+class ProfileFollowerView(generics.GenericAPIView):
+    def post(self, request, username, *args, **kwargs):
+        user = get_object_or_404(get_user_model(), username=username)
+        user.followers.add(request.user)
+        return Response(status=204)
+
+    def delete(self, request, username, *args, **kwargs):
+        user = get_object_or_404(get_user_model(), username=username)
+        user.followers.add(request.user)
+        return Response(status=204)
 
 
 class UserDetailView(generics.RetrieveUpdateAPIView):

@@ -10,6 +10,11 @@ apiurlpatterns = router.urls + [
     path("settings/", views.UserDetailView.as_view(), name="user-detail"),
     path("tags/", views.TagListView.as_view(), name="tag-list"),
     path(
+        "articles/<slug:slug>/favorites",
+        views.ArticleFavoriteView.as_view(),
+        name="article-favorite-list",
+    ),
+    path(
         "articles/<slug:slug>/comments",
         views.CommentListView.as_view(),
         name="comment-list",
@@ -26,6 +31,11 @@ apiurlpatterns = router.urls + [
     ),
     path(
         "profiles/<username>/", views.ProfileDetailView.as_view(), name="profile-detail"
+    ),
+    path(
+        "profiles/<username>/followers",
+        views.ProfileFollowerView.as_view(),
+        name="profile-follower-list",
     ),
 ]
 urlpatterns = [path("api/", include((apiurlpatterns, "api")))]
